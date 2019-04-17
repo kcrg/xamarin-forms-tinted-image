@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Plugin.CrossPlatformTintedImage.Abstractions
 {
@@ -13,8 +8,8 @@ namespace Plugin.CrossPlatformTintedImage.Abstractions
 
         public Color TintColor
         {
-            get { return (Color)GetValue(TintColorProperty); }
-            set { SetValue(TintColorProperty, value); }
+            get => (Color)GetValue(TintColorProperty);
+            set => SetValue(TintColorProperty, value);
         }
     }
 }

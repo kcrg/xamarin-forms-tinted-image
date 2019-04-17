@@ -1,15 +1,16 @@
-﻿using System;
-using Android.Views;
+﻿using Android.Graphics;
+using Plugin.CrossPlatformTintedImage.Abstractions;
+using Plugin.CrossPlatformTintedImage.Android;
+using System;
+using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using Android.Graphics;
-using System.ComponentModel;
-using Plugin.CrossPlatformTintedImage.Android;
-using Plugin.CrossPlatformTintedImage.Abstractions;
+using Color = Xamarin.Forms.Color;
 
-[assembly:ExportRendererAttribute(typeof(TintedImage), typeof(TintedImageRenderer))]
+[assembly: ExportRenderer(handler: typeof(TintedImage), target: typeof(TintedImageRenderer))]
 namespace Plugin.CrossPlatformTintedImage.Android
 {
+    [Obsolete]
     public class TintedImageRenderer : ImageRenderer
     {
         public static void Init()
@@ -27,27 +28,32 @@ namespace Plugin.CrossPlatformTintedImage.Android
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e.PropertyName == TintedImage.TintColorProperty.PropertyName || e.PropertyName == TintedImage.SourceProperty.PropertyName)
+            if (e.PropertyName == TintedImage.TintColorProperty.PropertyName || e.PropertyName == Image.SourceProperty.PropertyName)
+            {
                 SetTint();
+            }
         }
 
-        void SetTint()
+        private void SetTint()
         {
             if (Control == null || Element == null)
+            {
                 return;
+            }
 
-            if (((TintedImage)Element).TintColor.Equals(Xamarin.Forms.Color.Transparent))
+            if (((TintedImage)Element).TintColor.Equals(Color.Transparent))
             {
                 //Turn off tinting
-
                 if (Control.ColorFilter != null)
+                {
                     Control.ClearColorFilter();
+                }
 
                 return;
             }
 
             //Apply tint color
-            var colorFilter = new PorterDuffColorFilter(((TintedImage)Element).TintColor.ToAndroid(), PorterDuff.Mode.SrcIn);
+            PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(((TintedImage)Element).TintColor.ToAndroid(), PorterDuff.Mode.SrcIn);
             Control.SetColorFilter(colorFilter);
         }
     }

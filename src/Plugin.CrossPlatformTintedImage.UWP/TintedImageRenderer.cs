@@ -1,33 +1,30 @@
-﻿using System;
+﻿using CompositionProToolkit;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
+using Plugin.CrossPlatformTintedImage.Abstractions;
+using Plugin.CrossPlatformTintedImage.UWP;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Graphics.Effects;
 using Windows.UI.Composition;
 using Windows.UI.Xaml.Hosting;
-using CompositionProToolkit;
-using Plugin.CrossPlatformTintedImage.UWP;
-using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Effects;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.UWP;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Numerics;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Shapes;
-using ImageSource = Xamarin.Forms.ImageSource;
 using Size = Windows.Foundation.Size;
-using Plugin.CrossPlatformTintedImage.Abstractions;
 
 [assembly: ExportRenderer(typeof(TintedImage), typeof(TintedImageRenderer))]
 namespace Plugin.CrossPlatformTintedImage.UWP
 {
     public class TintedImageRenderer : ImageRenderer
     {
-        CompositionEffectBrush effectBrush;
-        SpriteVisual spriteVisual;
-        IImageSurface imageSurface;
-        Compositor compositor;
-        ICompositionGenerator generator;
+        private CompositionEffectBrush effectBrush;
+        private SpriteVisual spriteVisual;
+        private IImageSurface imageSurface;
+        private Compositor compositor;
+        private ICompositionGenerator generator;
 
         public static void Init()
         {
@@ -40,7 +37,7 @@ namespace Plugin.CrossPlatformTintedImage.UWP
             SetupCompositor();
         }
 
-        protected async override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override async void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
 
@@ -85,7 +82,9 @@ namespace Plugin.CrossPlatformTintedImage.UWP
                 }
 
                 if (e.PropertyName == Image.SourceProperty.PropertyName || spriteVisual == null || (effectBrush == null && ((TintedImage)Element).TintColor != Color.Transparent))
+                {
                     await CreateTintEffectBrushAsync(new Uri($"ms-appx:///{((FileImageSource)Element.Source).File}"));
+                }
             }
             catch (Exception ex)
             {
@@ -93,15 +92,17 @@ namespace Plugin.CrossPlatformTintedImage.UWP
             }
         }
 
-        void SetTint(Windows.UI.Color color)
+        private void SetTint(Windows.UI.Color color)
         {
             effectBrush?.Properties.InsertColor("colorSource.Color", color);
         }
 
-        async Task CreateTintEffectBrushAsync(Uri uri)
+        private async Task CreateTintEffectBrushAsync(Uri uri)
         {
             if (Control == null || Element == null || Element.Width < 0 || Element.Height < 0)
+            {
                 return;
+            }
 
             SetupCompositor();
 
@@ -153,16 +154,18 @@ namespace Plugin.CrossPlatformTintedImage.UWP
             ElementCompositionPreview.SetElementChildVisual(Control, spriteVisual);
         }
 
-        void SetupCompositor()
+        private void SetupCompositor()
         {
             if (compositor != null && generator != null)
+            {
                 return;
+            }
 
             compositor = ElementCompositionPreview.GetElementVisual(Control).Compositor;
             generator = compositor.CreateCompositionGenerator();
         }
 
-        static Windows.UI.Color GetNativeColor(Color color)
+        private static Windows.UI.Color GetNativeColor(Color color)
         {
             return Windows.UI.Color.FromArgb((byte)(color.A * 255), (byte)(color.R * 255), (byte)(color.G * 255), (byte)(color.B * 255));
         }

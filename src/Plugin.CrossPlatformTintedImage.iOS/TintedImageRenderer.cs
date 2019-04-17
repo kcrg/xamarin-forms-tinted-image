@@ -1,15 +1,14 @@
-﻿using Plugin.CrossPlatformTintedImage.iOS;
-using Plugin.CrossPlatformTintedImage.Abstractions;
+﻿using Plugin.CrossPlatformTintedImage.Abstractions;
+using Plugin.CrossPlatformTintedImage.iOS;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly:ExportRendererAttribute(typeof(TintedImage), typeof(TintedImageRenderer))]
-
+[assembly: ExportRenderer(typeof(TintedImage), typeof(TintedImageRenderer))]
 namespace Plugin.CrossPlatformTintedImage.iOS
 {
     public class TintedImageRenderer : ImageRenderer
     {
-        public static void Init()
+        public static new void Init()
         {
         }
 
@@ -25,13 +24,17 @@ namespace Plugin.CrossPlatformTintedImage.iOS
             base.OnElementPropertyChanged(sender, e);
 
             if (e.PropertyName == TintedImage.TintColorProperty.PropertyName || e.PropertyName == TintedImage.SourceProperty.PropertyName)
+            {
                 SetTint();
+            }
         }
 
-        void SetTint()
+        private void SetTint()
         {
             if (Control?.Image == null || Element == null)
+            {
                 return;
+            }
 
             if (((TintedImage)Element).TintColor == Color.Transparent)
             {

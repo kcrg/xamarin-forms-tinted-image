@@ -1,7 +1,7 @@
-﻿using Android.Graphics;
+﻿using Android.Content;
+using Android.Graphics;
 using Plugin.CrossPlatformTintedImage.Abstractions;
 using Plugin.CrossPlatformTintedImage.Android;
-using System;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -10,10 +10,9 @@ using Color = Xamarin.Forms.Color;
 [assembly: ExportRenderer(handler: typeof(TintedImage), target: typeof(TintedImageRenderer))]
 namespace Plugin.CrossPlatformTintedImage.Android
 {
-    [Obsolete]
     public class TintedImageRenderer : ImageRenderer
     {
-        public static void Init()
+        public TintedImageRenderer(Context context) : base(context)
         {
         }
 

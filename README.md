@@ -1,7 +1,7 @@
 # Cross Platform Tinted Image
 A simple custom control for tinting images in Xamarin Forms. 
 
-Updated to .Net core and removed obsolete code by @kcrg
+Updated to .Net standard and removed obsolete code by @kcrg
 
 ## Supported Platforms
 The `TintedImage` control supports native renderer implementations for the following platforms:

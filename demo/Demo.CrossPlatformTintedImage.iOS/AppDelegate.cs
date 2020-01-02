@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
 using UIKit;
-
-using Plugin.CrossPlatformTintedImage.iOS;
 
 namespace Demo.CrossPlatformTintedImage.iOS
 {
@@ -25,8 +19,6 @@ namespace Demo.CrossPlatformTintedImage.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            TintedImageRenderer.Init();
-
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
